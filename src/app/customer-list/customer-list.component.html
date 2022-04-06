@@ -1,16 +1,40 @@
-<div>
+<div style="width: 70%; margin: auto;">
+   
     <h1>Customer List</h1>
 
+    <h1 *ngIf="please_wait" style="color: red;">PLEASE WAIT...</h1>
+
+    <div *ngIf="show_add_new_form">
+        <p>Create new customer:</p>
+        
+        First name:
+        <input type="text" [(ngModel)]="new_customer.first_name"/>
+        Last name:
+        <input type="text" [(ngModel)]="new_customer.last_name"/>
+        Email:
+        <input type="text" [(ngModel)]="new_customer.email"/>
+        
+        <button (click)="createCustomer()">ADD NEW</button>
+        <button (click)="cancelCustomer()">CANCEL</button>
+    </div>
+
+    <button (click)="showHideForm()" *ngIf="!show_add_new_form">Show Add New Form</button>
+    <br/>
+    <br/>
     <table class="table table-bordered table-striped">
         <tr>
             <th>First name</th>
             <th>Last name</th>
             <th>Email</th>
+            <th></th>
         </tr>
         <tr *ngFor="let customer of customers"> 
             <td>{{customer.first_name}}</td>
             <td>{{customer.last_name}}</td>
             <td>{{customer.email}}</td>
+            <td>
+                <button (click)="deleteCustomer(customer)">DELETE</button>
+            </td>
         </tr>
     </table>
 

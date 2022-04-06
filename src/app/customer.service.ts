@@ -8,8 +8,6 @@ import axios from 'axios';
 })
 export class CustomerService {
 
-  private customers: Customer[] = [];
-
   constructor() { }
 
   getCustomers() {
@@ -18,10 +16,30 @@ export class CustomerService {
     return axios.get("http://localhost:8080/api/customers")
     .then((response) => {
         console.log('server response:' + response.data)
-        this.customers = response.data;
-        return this.customers;
+        return response.data;
     });
   }
 
+  createCustomer(new_customer:Customer) {
+    console.log("create customer caled!")
+
+    //delete the empty property, otherwise mongodb will complain (trying to insert empty/dupe key)
+    delete new_customer['_id'];
+
+    return axios.post("http://localhost:8080/api/customers", new_customer)
+    .then((response) => {
+      console.log("server response: " + response.data)
+      return response.data;
+    })
+  }
+
+  deleteCustomer(customer:Customer) {
+    console.log(customer);
+    return axios.delete("http://localhost:8080/api/customers/" + customer['_id'])
+    .then((response) => {
+      console.log("server response: " + response.data)
+      return response.data;
+    })
+  }
 
 }
