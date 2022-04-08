@@ -29,11 +29,39 @@
             <th></th>
         </tr>
         <tr *ngFor="let customer of customers"> 
-            <td>{{customer.first_name}}</td>
-            <td>{{customer.last_name}}</td>
-            <td>{{customer.email}}</td>
             <td>
-                <button (click)="deleteCustomer(customer)">DELETE</button>
+                <span *ngIf="editing_record != customer._id">
+                    {{customer.first_name}}
+                </span>
+                <span *ngIf="editing_record == customer._id">
+                    <input type="text" [(ngModel)]="customer.first_name"/>
+                </span>
+            </td>
+            <td>
+                <span *ngIf="editing_record != customer._id">
+                    {{customer.last_name}}
+                </span>
+                <span *ngIf="editing_record == customer._id">
+                    <input type="text" [(ngModel)]="customer.last_name"/>
+                </span>
+            </td>
+            <td>
+                <span *ngIf="editing_record != customer._id">
+                    {{customer.email}}
+                </span>
+                <span *ngIf="editing_record == customer._id">
+                    <input type="text" [(ngModel)]="customer.email"/>
+                </span>
+            </td>
+            <td>
+                <span *ngIf="editing_record != customer._id">
+                    <button (click)="editCustomer(customer)">EDIT</button>
+                    <button (click)="deleteCustomer(customer)">DELETE</button>
+                </span>
+                <span *ngIf="editing_record == customer._id">
+                    <button (click)="saveCustomer(customer)">SAVE</button>
+                    <button (click)="cancelEditCustomer()">CANCEL</button>
+                </span>
             </td>
         </tr>
     </table>

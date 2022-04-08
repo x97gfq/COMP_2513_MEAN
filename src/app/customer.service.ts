@@ -33,6 +33,18 @@ export class CustomerService {
     })
   }
 
+  saveCustomer(customer:Customer) {
+    console.log("save customer caled!")
+
+    let customer_data = { customer: customer };
+
+    return axios.put("http://localhost:8080/api/customers", customer_data)
+    .then((response) => {
+      console.log("server response: " + response.data)
+      return response.data;
+    })
+  }
+  
   deleteCustomer(customer:Customer) {
     console.log(customer);
     return axios.delete("http://localhost:8080/api/customers/" + customer['_id'])

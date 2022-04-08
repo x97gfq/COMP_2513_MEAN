@@ -10,9 +10,10 @@ import { Customer } from '../customer';
 export class CustomerListComponent implements OnInit {
 
   public customers: Customer[] = [];
-  public show_add_new_form: boolean = true;
+  public show_add_new_form: boolean = false;
   public new_customer: Customer = new Customer("","","","");
   public please_wait: boolean = false;
+  public editing_record: string = "";
 
   constructor(private service: CustomerService) { }
 
@@ -31,6 +32,35 @@ export class CustomerListComponent implements OnInit {
     })
   }
   
+  editCustomer(customer:Customer): void {
+    this.editing_record = customer["_id"]!;
+  }
+
+  saveCustomer(customer:Customer):void {
+
+    if (customer['last_name'].length > 100 || customer['first_name'].length > 100 || customer['email'].indexOf("@") == -1) {
+      alert("you did something dumb");
+      return;
+    }
+
+    this.please_wait = true;
+
+    this.service.saveCustomer(customer)
+    .then((returnVal) => {
+      this.cancelEditCustomer();
+      this.please_wait = false;
+    })
+    .catch(err => {
+      console.log("Axios err: ", err);
+      this.please_wait = false;
+    })
+
+  }
+
+  cancelEditCustomer():void {
+    this.editing_record = "";
+  }
+
   showHideForm(): void {
     this.show_add_new_form = !this.show_add_new_form;
   }
